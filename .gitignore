@@ -34,3 +34,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### google OAuth client ID ###
+/src/main/resources/google.yml
