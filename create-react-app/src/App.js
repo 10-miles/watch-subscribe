@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
 
-class MyComponent extends Component
+class MainComponent extends Component
 {
   handleOnClick = () => {
     console.log("Click")
@@ -20,4 +20,4 @@ class MyComponent extends Component
   }
 }
 
-export default MyComponent;
+export default MainComponent;
