@@ -1,16 +1,23 @@
-import React from 'react';
+import React, {Component} from 'react';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <button onClick = {() => {console.log("Click")}}>
-          Gmail login
-        </button>
-      </header>
-    </div>
-  );
+class MyComponent extends Component
+{
+  handleOnClick = () => {
+    console.log("Click")
+  };
+
+  render(){
+    return(
+      <div className={"App"}>
+        <header className={"App-header"}>
+          <button onClick = {this.handleOnClick}>
+            Gmail login
+          </button>
+        </header>
+      </div>
+    )
+  }
 }
 
-export default App;
+export default MyComponent;
