@@ -2,8 +2,6 @@
 .DS_Store
 /create-react-app/node_modules
 
-
-
 HELP.md
 .gradle
 build/
@@ -36,3 +34,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### client ###
+client/yarn.lock
+client/node_modules
+client/package-lock.json
