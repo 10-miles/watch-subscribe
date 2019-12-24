@@ -1,6 +1,5 @@
 /.idea
 .DS_Store
-/create-react-app/node_modules
 
 HELP.md
 .gradle
