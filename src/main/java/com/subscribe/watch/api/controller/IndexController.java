@@ -8,11 +8,6 @@ public class IndexController {
 
   @GetMapping("/")
   public String index() {
-    return "test/index";
-  }
-
-  @GetMapping("/react")
-  public String react() {
-    return "build/index";
+    return "index";
   }
 }
