@@ -33,8 +33,3 @@ out/
 
 ### VS Code ###
 .vscode/
-
-### client ###
-client/yarn.lock
-client/node_modules
-client/package-lock.json
