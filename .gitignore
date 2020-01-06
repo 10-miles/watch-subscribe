@@ -36,3 +36,7 @@ out/
 
 ### sample file ###
 sample.json
+
+### Google OAuth ###
+src/main/resources/credentials.json
+tokens/
