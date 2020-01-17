@@ -1,17 +1,33 @@
 package com.subscribe.watch.api.controller;
 
+import com.subscribe.watch.api.config.oauth.SessionConstants;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 @RestController
 public class googleController {
+
+  private HttpSession httpSession;
+
+  public googleController(HttpSession httpSession) {
+    this.httpSession = httpSession;
+  }
+
+  @GetMapping("/me")
+  public Map<String, Object> me(){
+    Map<String, Object> response = new LinkedHashMap<>();
+    response.put("profile", httpSession.getAttribute(SessionConstants.LOGIN_USER));
+    return response;
+  }
 
   @RequestMapping("/login")
   public String login(){

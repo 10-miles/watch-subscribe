@@ -1,7 +1,6 @@
-package com.subscribe.watch.api.config;
+package com.subscribe.watch.api.config.oauth;
 
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -11,8 +10,6 @@ import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
-import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
-import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 
 import javax.servlet.Filter;
@@ -22,9 +19,11 @@ import javax.servlet.Filter;
 public class OAuthConfig {
 
   private final OAuth2ClientContext oauth2ClientContext;
+  private final GoogleAuthenticationSuccessHandler authenticationSuccessHandler;
 
-  public OAuthConfig(@Qualifier ( "oauth2ClientContext") OAuth2ClientContext oauth2ClientContext) {
+  public OAuthConfig(@Qualifier ( "oauth2ClientContext") OAuth2ClientContext oauth2ClientContext,GoogleAuthenticationSuccessHandler authenticationSuccessHandler) {
     this.oauth2ClientContext = oauth2ClientContext;
+    this.authenticationSuccessHandler = authenticationSuccessHandler;
   }
 
   @Bean
@@ -33,7 +32,7 @@ public class OAuthConfig {
     OAuth2RestTemplate oAuth2RestTemplate = new OAuth2RestTemplate(google().getClient(), oauth2ClientContext);
     oauth2Filter.setRestTemplate(oAuth2RestTemplate);
     oauth2Filter.setTokenServices(new UserInfoTokenServices(google().getResource().getUserInfoUri(), google().getClient().getClientId()));
-
+    oauth2Filter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
     return oauth2Filter;
   }
 

@@ -1,4 +1,4 @@
-package com.subscribe.watch.api.config;
+package com.subscribe.watch.api.config.oauth;
 
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
