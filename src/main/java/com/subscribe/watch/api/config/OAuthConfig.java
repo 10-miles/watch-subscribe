@@ -29,11 +29,6 @@ public class OAuthConfig {
 
   @Bean
   public Filter ssoFilter() {
-    System.out.println("test");
-    System.out.println(google().getClient().getClientId());
-    System.out.println(google().getResource().getUserInfoUri());
-
-
     OAuth2ClientAuthenticationProcessingFilter oauth2Filter = new OAuth2ClientAuthenticationProcessingFilter("/login");
     OAuth2RestTemplate oAuth2RestTemplate = new OAuth2RestTemplate(google().getClient(), oauth2ClientContext);
     oauth2Filter.setRestTemplate(oAuth2RestTemplate);

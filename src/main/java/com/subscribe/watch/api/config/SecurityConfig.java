@@ -18,7 +18,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   public SecurityConfig(Filter ssoFilter) {
     this.ssoFilter = ssoFilter;
-    System.out.println(ssoFilter);
   }
 
   @Override
