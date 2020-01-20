@@ -21,7 +21,7 @@ public class OAuthConfig {
   private final OAuth2ClientContext oauth2ClientContext;
   private final GoogleAuthenticationSuccessHandler authenticationSuccessHandler;
 
-  public OAuthConfig(@Qualifier ( "oauth2ClientContext") OAuth2ClientContext oauth2ClientContext,GoogleAuthenticationSuccessHandler authenticationSuccessHandler) {
+  public OAuthConfig(@Qualifier("oauth2ClientContext") OAuth2ClientContext oauth2ClientContext, GoogleAuthenticationSuccessHandler authenticationSuccessHandler) {
     this.oauth2ClientContext = oauth2ClientContext;
     this.authenticationSuccessHandler = authenticationSuccessHandler;
   }
@@ -31,7 +31,8 @@ public class OAuthConfig {
     OAuth2ClientAuthenticationProcessingFilter oauth2Filter = new OAuth2ClientAuthenticationProcessingFilter("/login");
     OAuth2RestTemplate oAuth2RestTemplate = new OAuth2RestTemplate(google().getClient(), oauth2ClientContext);
     oauth2Filter.setRestTemplate(oAuth2RestTemplate);
-    oauth2Filter.setTokenServices(new UserInfoTokenServices(google().getResource().getUserInfoUri(), google().getClient().getClientId()));
+    UserInfoTokenServices tokenServices = new UserInfoTokenServices(google().getResource().getUserInfoUri(), google().getClient().getClientId());
+    oauth2Filter.setTokenServices(tokenServices);
     oauth2Filter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
     return oauth2Filter;
   }

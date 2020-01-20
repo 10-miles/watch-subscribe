@@ -1,10 +1,12 @@
 package com.subscribe.watch.api.config.oauth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.subscribe.watch.api.config.session.SessionConstants;
 import com.subscribe.watch.api.entity.GoogleUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
@@ -20,7 +22,6 @@ public class GoogleAuthenticationSuccessHandler implements AuthenticationSuccess
   private ObjectMapper objectMapper;
 
   public GoogleAuthenticationSuccessHandler(HttpSession httpSession, ObjectMapper objectMapper) {
-    System.out.println("constructor Called");
     this.httpSession = httpSession;
     this.objectMapper = objectMapper;
   }
@@ -28,7 +29,10 @@ public class GoogleAuthenticationSuccessHandler implements AuthenticationSuccess
   @Override
   public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
     System.out.println("onAuthenticationSuccess");
+
     httpSession.setAttribute(SessionConstants.LOGIN_USER, getGoogleUser(authentication));
+    httpSession.setAttribute(SessionConstants.USER_CODE, request.getParameter("code"));
+
     response.sendRedirect("/me");
   }
 

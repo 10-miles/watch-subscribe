@@ -20,5 +20,4 @@ public class GoogleUser implements Serializable {
   private String name;
   @JsonProperty("picture")
   private String picture;
-
 }
