@@ -1,4 +1,4 @@
-package com.subscribe.watch.api.config;
+package com.subscribe.watch.api.config.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
