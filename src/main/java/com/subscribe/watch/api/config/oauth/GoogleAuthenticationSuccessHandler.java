@@ -5,6 +5,7 @@ import com.subscribe.watch.api.config.session.SessionConstants;
 import com.subscribe.watch.api.entity.GoogleUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
@@ -29,9 +30,13 @@ public class GoogleAuthenticationSuccessHandler implements AuthenticationSuccess
   @Override
   public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
     System.out.println("onAuthenticationSuccess");
+    Object details = authentication.getDetails();
+    OAuth2AuthenticationDetails oauthDetails = (OAuth2AuthenticationDetails)details;
+    String token = oauthDetails.getTokenValue();
 
     httpSession.setAttribute(SessionConstants.LOGIN_USER, getGoogleUser(authentication));
     httpSession.setAttribute(SessionConstants.USER_CODE, request.getParameter("code"));
+    httpSession.setAttribute(SessionConstants.USER_TOKEN, token);
 
     response.sendRedirect("/me");
   }
