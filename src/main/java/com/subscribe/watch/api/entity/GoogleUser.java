@@ -16,8 +16,11 @@ public class GoogleUser implements Serializable {
 
   @JsonProperty("email")
   private String email;
+
   @JsonProperty("name")
   private String name;
+
   @JsonProperty("picture")
   private String picture;
+
 }
