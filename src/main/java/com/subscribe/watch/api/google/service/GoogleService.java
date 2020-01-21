@@ -4,5 +4,6 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 
 public interface GoogleService {
-  public void getGmailList(String accessToken) throws GeneralSecurityException, IOException;
+  void getGmailList(String accessToken) throws GeneralSecurityException, IOException;
+  void listMessagesMatchingQuery(String accessToken, String query) throws GeneralSecurityException, IOException;
 }

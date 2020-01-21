@@ -11,6 +11,8 @@ import com.google.api.services.gmail.model.Label;
 import com.google.api.services.gmail.model.ListLabelsResponse;
 import com.google.api.services.gmail.model.ListMessagesResponse;
 import com.google.api.services.gmail.model.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -19,6 +21,8 @@ import java.util.List;
 
 @Service
 public class GoogleServiceImpl implements GoogleService {
+
+  private Logger log = LoggerFactory.getLogger(GoogleServiceImpl.class);
 
   private static final String APPLICATION_NAME = "Gmail API Java Quickstart";
   private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
@@ -62,6 +66,29 @@ public class GoogleServiceImpl implements GoogleService {
         getMessage(service,user,message.getId());
       }
     }
+
+  }
+
+  @Override
+  public void listMessagesMatchingQuery(String accessToken, String query) throws GeneralSecurityException, IOException {
+    final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+    Gmail service = new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, createCredentials(accessToken))
+            .setApplicationName(APPLICATION_NAME)
+            .build();
+
+    String user = "me";
+
+    ListMessagesResponse listMessagesResponse = service.users().messages().list(user).setQ(query).execute();
+    List<Message> messages = listMessagesResponse.getMessages();
+
+    if (messages.isEmpty()) {
+      System.out.println("No messages found.");
+    } else {
+      System.out.println("Messages:");
+      for (Message message : messages) {
+        getMessage(service, user, message.getId());
+      }
+    }
   }
 
   /**
@@ -73,11 +100,12 @@ public class GoogleServiceImpl implements GoogleService {
     return credential.setAccessToken(accessToken);
   }
 
-  public static Message getMessage(Gmail service, String userId, String messageId)
+  private Message getMessage(Gmail service, String userId, String messageId)
           throws IOException {
     Message message = service.users().messages().get(userId, messageId).execute();
 
-    System.out.println("Message snippet: " + message.getSnippet());
+    // System.out.println("Message snippet: " + message.getSnippet());
+    log.info("Message snippet: {}", message.getSnippet());
 
     return message;
   }

@@ -21,6 +21,8 @@ public class GoogleController {
   private HttpSession httpSession;
   private GoogleServiceImpl googleService;
 
+  private static final String GMAIL_SEARCH_QUERY = "from:(googleplay)";
+
   public GoogleController(HttpSession httpSession, GoogleServiceImpl googleService) {
     this.httpSession = httpSession;
     this.googleService = googleService;
@@ -34,8 +36,8 @@ public class GoogleController {
     response.put("code", httpSession.getAttribute(SessionConstants.USER_CODE));
     response.put("token", token);
 
-    googleService.getGmailList(token);
-
+    // googleService.getGmailList(token);
+    googleService.listMessagesMatchingQuery(token, GMAIL_SEARCH_QUERY);
     return response;
   }
 
