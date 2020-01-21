@@ -1,4 +1,4 @@
-package com.subscribe.watch.api.entity;
+package com.subscribe.watch.api.google.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

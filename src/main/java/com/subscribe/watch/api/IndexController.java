@@ -1,4 +1,4 @@
-package com.subscribe.watch.api.controller;
+package com.subscribe.watch.api;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
