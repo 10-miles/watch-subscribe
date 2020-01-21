@@ -2,7 +2,7 @@ package com.subscribe.watch.api.config.oauth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.subscribe.watch.api.config.session.SessionConstants;
-import com.subscribe.watch.api.entity.GoogleUser;
+import com.subscribe.watch.api.google.entity.GoogleUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
