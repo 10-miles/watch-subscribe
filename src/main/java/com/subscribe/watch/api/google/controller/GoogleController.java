@@ -1,6 +1,5 @@
 package com.subscribe.watch.api.google.controller;
 
-import com.subscribe.watch.api.config.oauth.ClientResources;
 import com.subscribe.watch.api.config.session.SessionConstants;
 import com.subscribe.watch.api.google.service.GoogleServiceImpl;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,8 +35,17 @@ public class GoogleController {
     response.put("code", httpSession.getAttribute(SessionConstants.USER_CODE));
     response.put("token", token);
 
+    //이메일 불러오는 시간 측정 start
+    long start = System.currentTimeMillis();
+
      googleService.getGmailList(token);
-//    googleService.listMessagesMatchingQuery(token, GMAIL_SEARCH_QUERY);
+    //googleService.listMessagesMatchingQuery(token, GMAIL_SEARCH_QUERY);
+
+    // 이메일 불러오는 시간 측정 end
+    long end = System.currentTimeMillis();
+    System.out.println( "실행 시간 : " + ( end - start )/1000.0 );
+
+
     return response;
   }
 
