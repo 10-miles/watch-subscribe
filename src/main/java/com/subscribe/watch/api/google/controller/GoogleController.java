@@ -36,8 +36,8 @@ public class GoogleController {
     response.put("code", httpSession.getAttribute(SessionConstants.USER_CODE));
     response.put("token", token);
 
-    // googleService.getGmailList(token);
-    googleService.listMessagesMatchingQuery(token, GMAIL_SEARCH_QUERY);
+     googleService.getGmailList(token);
+//    googleService.listMessagesMatchingQuery(token, GMAIL_SEARCH_QUERY);
     return response;
   }
 
@@ -45,7 +45,5 @@ public class GoogleController {
   public Principal userInfo(Principal principal) {
     return principal;
   }
-
-
 
 }

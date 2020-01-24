@@ -7,8 +7,6 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.gmail.Gmail;
-import com.google.api.services.gmail.model.Label;
-import com.google.api.services.gmail.model.ListLabelsResponse;
 import com.google.api.services.gmail.model.ListMessagesResponse;
 import com.google.api.services.gmail.model.Message;
 import org.slf4j.Logger;
@@ -28,14 +26,7 @@ public class GoogleServiceImpl implements GoogleService {
   private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
   /**
-   *
-   * @param accessToken
-   * @throws GeneralSecurityException
-   * @throws IOException
-   * @return User Gmail List
-   *
    * MethodRole Gmail오브젝트 생성 후 Http Request를 통해 사용자의 Gmail List 를 읽어 들인다.
-   *
    */
   @Override
   public void getGmailList(String accessToken) throws GeneralSecurityException, IOException {
@@ -45,27 +36,11 @@ public class GoogleServiceImpl implements GoogleService {
             .build();
 
     String user = "me";
-//    ListLabelsResponse listResponse = service.users().labels().list(user).execute();
-//    List<Label> labels = listResponse.getLabels();
-//    if (labels.isEmpty()) {
-//      System.out.println("No labels found.");
-//    } else {
-//      System.out.println("Labels:");
-//      for (Label label : labels) {
-//        System.out.printf("- %s\n", label.getName());
-//      }
-//    }
 
     ListMessagesResponse listMessagesResponse = service.users().messages().list(user).execute();
     List<Message> messages = listMessagesResponse.getMessages();
-    if (messages.isEmpty()) {
-      System.out.println("No messages found.");
-    } else {
-      System.out.println("Messages:");
-      for (Message message : messages) {
-        getMessage(service,user,message.getId());
-      }
-    }
+
+    printMessageList(messages,user,service);
 
   }
 
@@ -81,6 +56,10 @@ public class GoogleServiceImpl implements GoogleService {
     ListMessagesResponse listMessagesResponse = service.users().messages().list(user).setQ(query).execute();
     List<Message> messages = listMessagesResponse.getMessages();
 
+    printMessageList(messages,user,service);
+  }
+
+  private void printMessageList(List<Message> messages,String user, Gmail service) throws IOException{
     if (messages.isEmpty()) {
       System.out.println("No messages found.");
     } else {
@@ -91,10 +70,6 @@ public class GoogleServiceImpl implements GoogleService {
     }
   }
 
-  /**
-   * @param accessToken
-   * @return Gmail Credential Object
-   */
   private Credential createCredentials(String accessToken) {
     Credential credential = new Credential(BearerToken.queryParameterAccessMethod());
     return credential.setAccessToken(accessToken);
