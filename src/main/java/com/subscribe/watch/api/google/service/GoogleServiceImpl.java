@@ -9,6 +9,8 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.ListMessagesResponse;
 import com.google.api.services.gmail.model.Message;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -21,9 +23,14 @@ import java.util.List;
 public class GoogleServiceImpl implements GoogleService {
 
   private Logger log = LoggerFactory.getLogger(GoogleServiceImpl.class);
+  private ExecutorService executorService;
 
   private static final String APPLICATION_NAME = "Gmail API Java Quickstart";
   private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+
+  public GoogleServiceImpl() {
+    this.executorService = Executors.newFixedThreadPool(10);
+  }
 
   /**
    * MethodRole Gmail오브젝트 생성 후 Http Request를 통해 사용자의 Gmail List 를 읽어 들인다.
@@ -39,7 +46,6 @@ public class GoogleServiceImpl implements GoogleService {
 
     ListMessagesResponse listMessagesResponse = service.users().messages().list(user).execute();
     List<Message> messages = listMessagesResponse.getMessages();
-
 
     printMessageList(messages, user, service);
 
@@ -69,7 +75,17 @@ public class GoogleServiceImpl implements GoogleService {
     } else {
       System.out.println("Messages:");
       for (Message message : messages) {
-        getMessage(service, user, message.getId());
+        executorService.submit(new Runnable() {
+          @Override
+          public void run() {
+            try {
+              getMessage(service, user, message.getId());
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+        });
+//        getMessage(service, user, message.getId());
       }
     }
   }
@@ -90,4 +106,5 @@ public class GoogleServiceImpl implements GoogleService {
     return message;
 //    return null;
   }
+
 }
