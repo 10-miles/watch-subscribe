@@ -32,34 +32,38 @@ public class GoogleServiceImpl implements GoogleService {
   public void getGmailList(String accessToken) throws GeneralSecurityException, IOException {
     final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
     Gmail service = new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, createCredentials(accessToken))
-            .setApplicationName(APPLICATION_NAME)
-            .build();
+        .setApplicationName(APPLICATION_NAME)
+        .build();
 
     String user = "me";
 
     ListMessagesResponse listMessagesResponse = service.users().messages().list(user).execute();
     List<Message> messages = listMessagesResponse.getMessages();
 
-    printMessageList(messages,user,service);
+
+    printMessageList(messages, user, service);
 
   }
 
   @Override
-  public void listMessagesMatchingQuery(String accessToken, String query) throws GeneralSecurityException, IOException {
+  public void listMessagesMatchingQuery(String accessToken, String query)
+      throws GeneralSecurityException, IOException {
     final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
     Gmail service = new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, createCredentials(accessToken))
-            .setApplicationName(APPLICATION_NAME)
-            .build();
+        .setApplicationName(APPLICATION_NAME)
+        .build();
 
     String user = "me";
 
-    ListMessagesResponse listMessagesResponse = service.users().messages().list(user).setQ(query).execute();
+    ListMessagesResponse listMessagesResponse = service.users().messages().list(user).setQ(query)
+        .execute();
     List<Message> messages = listMessagesResponse.getMessages();
 
-    printMessageList(messages,user,service);
+    printMessageList(messages, user, service);
   }
 
-  private void printMessageList(List<Message> messages,String user, Gmail service) throws IOException{
+  private void printMessageList(List<Message> messages, String user, Gmail service)
+      throws IOException {
     if (messages.isEmpty()) {
       System.out.println("No messages found.");
     } else {
@@ -76,12 +80,14 @@ public class GoogleServiceImpl implements GoogleService {
   }
 
   private Message getMessage(Gmail service, String userId, String messageId)
-          throws IOException {
-    Message message = service.users().messages().get(userId, messageId).execute();
+      throws IOException {
+    System.out.println(messageId);
+    Message message = service.users().messages().get(userId, messageId)
+        .execute(); // <- 주범 이 놈을 논 블로킹으로 만들어야함.
 
-    // System.out.println("Message snippet: " + message.getSnippet());
     log.info("Message snippet: {}", message.getSnippet());
 
     return message;
+//    return null;
   }
 }
